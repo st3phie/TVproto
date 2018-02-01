@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+    * {
+        box-sizing: border-box; /* Include padding and border in the element's total width and height: */
+    }
+
+    body {
+    	-webkit-user-select: none;
+    }
+</style>
+    
+
+</head>
+
+<body>
+
+<script>
+	"use strict";
+
+	class Channel {
+		constructor() {
+			this.id = "";
+			this.name = "";
+			this.video = "";
+		}
+	}
+
+	// --- Declare variables ---
+
+	let channels = [];
+	let channels_num = 3;
+
+	let active_channel = null;
+	let prev_channel = null;
+
+
+	for (let i=0; i<channels_num; i++) {
+		let channel = new Channel();
+		channel.id = i;
+		channels[i] = channel;	// Add the new channel to the channels array
+	}
+
+	channels[0].name = "Q&A All Day";
+	channels[1].name = "Culinary Adventures";
+	channels[2].name = "Kids";
+
+	for (let i=0; i<channels_num; i++) {
+		console.log ("[" + channels[i].id + "] " + channels[i].name);
+	}
+	console.log ("");
+
+	active_channel = channels[0];	// Set active channel to the first channel
+	prev_channel = channels[0];	// Set active channel to the first channel
+	console.log ("Active channel: [" + active_channel.id + "] " + active_channel.name);
+	console.log ("");
+
+
+	// --- Functions ---
+
+	function switch_channel () {
+		let arrow = null;	// set arrow direction;
+		let prev_channel = active_channel;
+		let temp_id = active_channel.id;	// temporary variable for storing channel id
+
+		// If the UP or LEFT arrow is pressed go to the prev channel
+		if (window.event.which === 38 | window.event.which === 37) {
+			arrow = "UP (prev)";
+
+			if (temp_id === 0) {
+				active_channel = channels[channels_num - 1];
+			}
+			else {
+				temp_id--;
+				active_channel = channels[temp_id];
+			}
+		}
+		// If the DOWN or RIGHT arrow is pressed go to the next channel
+		if (window.event.which === 40 | window.event.which === 39) {
+			arrow = "DOWN (next)";
+
+			if (temp_id === channels_num - 1) {
+				active_channel = channels[0];
+			}
+			else {
+				temp_id++;
+				active_channel = channels[temp_id];
+			}
+		}
+		console.log (arrow + " key pressed: " + prev_channel.id + " -> " + active_channel.id);
+	}
+
+	
+	// --- Event listeners ---
+
+	document.addEventListener("keyup", switch_channel, false);	// Switch the channel is a key is pressed
+
+
+</script>
+
+<p>a</p>
+
+
+</body>
+
+</html>
