@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <style>
     * {
         box-sizing: border-box; /* Include padding and border in the element's total width and height: */
@@ -9,13 +8,29 @@
 
     body {
     	-webkit-user-select: none;
+    	margin: 0;
+    	background: #555;
     }
-</style>
-    
 
+    #viewport {
+    }
+
+    #channel-video {
+    	width: 1280px;
+    	height: 720px;
+
+    	position: absolute;
+    	background: #777;
+    }
+
+</style>
 </head>
 
 <body>
+	<div id="viewport"></div>
+	<div id="channel-video"></div>
+</body>
+
 
 <script>
 	"use strict";
@@ -28,7 +43,9 @@
 		}
 	}
 
-	// --- Declare variables ---
+	// --- Declare constants & variables ---
+
+	const CHANNELVID = document.getElementById('channel-video');
 
 	let channels = [];
 	let channels_num = 3;
@@ -37,25 +54,38 @@
 	let prev_channel = null;
 
 
+	// --- Create channels ---
+
+	// Inititalise channels
 	for (let i=0; i<channels_num; i++) {
 		let channel = new Channel();
 		channel.id = i;
 		channels[i] = channel;	// Add the new channel to the channels array
 	}
 
+	// Set channel names
 	channels[0].name = "Q&A All Day";
 	channels[1].name = "Culinary Adventures";
 	channels[2].name = "Kids";
-
+	// Print channels to console
 	for (let i=0; i<channels_num; i++) {
 		console.log ("[" + channels[i].id + "] " + channels[i].name);
 	}
 	console.log ("");
-
+	// Print active channel to console for reference
 	active_channel = channels[0];	// Set active channel to the first channel
 	prev_channel = channels[0];	// Set active channel to the first channel
 	console.log ("Active channel: [" + active_channel.id + "] " + active_channel.name);
 	console.log ("");
+
+
+	// Set channel video source
+	channels[0].video = "qanda.jpeg";
+	channels[1].video = "culinaryadventures.jpg";
+	channels[2].video = "kids.jpg";	
+	// Set background to first video
+	let path = 'url("' + channels[0].video + '")';
+	CHANNELVID.style.background = path;
 
 
 	// --- Functions ---
@@ -71,10 +101,14 @@
 
 			if (temp_id === 0) {
 				active_channel = channels[channels_num - 1];
+				path = 'url("' + channels[channels_num - 1].video + '")';
+				CHANNELVID.style.background = path;
 			}
 			else {
 				temp_id--;
 				active_channel = channels[temp_id];
+				path = 'url("' + channels[temp_id].video + '")';
+				CHANNELVID.style.background = path;
 			}
 		}
 		// If the DOWN or RIGHT arrow is pressed go to the next channel
@@ -83,10 +117,14 @@
 
 			if (temp_id === channels_num - 1) {
 				active_channel = channels[0];
+				path = 'url("' + channels[0].video + '")';
+				CHANNELVID.style.background = path;
 			}
 			else {
 				temp_id++;
 				active_channel = channels[temp_id];
+				path = 'url("' + channels[temp_id].video + '")';
+				CHANNELVID.style.background = path;
 			}
 		}
 		console.log (arrow + " key pressed: " + prev_channel.id + " -> " + active_channel.id);
@@ -100,9 +138,5 @@
 
 </script>
 
-<p>a</p>
-
-
-</body>
 
 </html>
